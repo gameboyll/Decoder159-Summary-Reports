@@ -1,6 +1,6 @@
 const today = new Date()
 
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(today)}&to=${formatDate(today)}`).then(function (response) {
+axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(today)}T00:00:00.000Z&to=${formatDate(today)}T23:59:59.000Z`).then(function (response) {
     const todayTotal = response.data
     const todayTotalAmount = todayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const todayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -9,7 +9,7 @@ axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pendin
 
 const yesterday = new Date()
 yesterday.setDate(yesterday.getDate() - 1);
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(yesterday)}&to=${formatDate(yesterday)}`).then(function (response) {
+axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(yesterday)}T00:00:00.000Z&to=${formatDate(yesterday)}T23:59:59.000Z`).then(function (response) {
     const yesterdayTotal = response.data
     const yesterdayTotalAmount = yesterdayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const yesterdayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -18,7 +18,7 @@ axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pendin
 
 const firstDayThisMonth = formatDate(new Date(today.getFullYear(), today.getMonth(), 1))
 const lastDayThisMonth = formatDate(new Date(today.getFullYear(), today.getMonth() + 1, 0))
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${firstDayThisMonth}&to=${lastDayThisMonth}`).then(function (response) {
+axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${firstDayThisMonth}T00:00:00.000Z&to=${lastDayThisMonth}T23:59:59.000Z`).then(function (response) {
     const thisMonthTotal = response.data
     const thisMonthTotalAmount = thisMonthTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const thisMonthOptions = { year: 'numeric', month: 'long'};
@@ -30,7 +30,7 @@ const lastMonth = new Date()
 lastMonth.setMonth(lastMonth.getMonth() - 1);
 const firstDayLastMonth = formatDate(new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 1))
 const lastDayLastMonth = formatDate(new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 0))
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=withdrawn&user_id=user-decoder@decoder159.com&from=${firstDayLastMonth}&to=${lastDayLastMonth}`).then(function (response) {
+axios.get(`https://payment.decoder159.com/payment/transaction/list?status=withdrawn&user_id=user-decoder@decoder159.com&from=${firstDayLastMonth}T00:00:00.000Z&to=${lastDayLastMonth}T23:59:59.000Z`).then(function (response) {
     const lastMonthTotal = response.data
     const lastMonthTotalAmount = lastMonthTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const lastMonthOptions = { year: 'numeric', month: 'long'};
