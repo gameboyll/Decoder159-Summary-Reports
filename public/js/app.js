@@ -1,21 +1,48 @@
 const today = new Date()
+const yesterday = new Date()
+yesterday.setDate(yesterday.getDate() - 1);
+const yesterday2 = new Date()
+yesterday2.setDate(yesterday2.getDate() - 2);
 
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(today)}T00:00:00.000Z&to=${formatDate(today)}T23:59:59.000Z`).then(function (response) {
+//Daily
+const todayInfoQuery = `https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-info@decoder159.com&from=${formatDate(yesterday)}T17:00:00.000Z&to=${formatDate(today)}T16:59:59.000Z`
+axios.get(todayInfoQuery).then(function (response) {
+    // axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(today)}T00:00:00.000Z&to=${formatDate(today)}T23:59:59.000Z`).then(function (response) {
     const todayTotal = response.data
     const todayTotalAmount = todayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const todayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById("reports").insertAdjacentHTML('afterend',`<h1>วันนี้</h1><br>${today.toLocaleString('th-TH', todayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${todayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${todayTotalAmount.toLocaleString()} บาท</h3>`)
+    document.getElementById("reports").insertAdjacentHTML('afterend',`<hr><h1>วันนี้ Info</h1><br>${today.toLocaleString('th-TH', todayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${todayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${todayTotalAmount.toLocaleString()} บาท</h3>`)
 });
 
-const yesterday = new Date()
-yesterday.setDate(yesterday.getDate() - 1);
-axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(yesterday)}T00:00:00.000Z&to=${formatDate(yesterday)}T23:59:59.000Z`).then(function (response) {
+const todayDecoderQuery = `https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(yesterday)}T17:00:00.000Z&to=${formatDate(today)}T16:59:59.000Z`
+axios.get(todayDecoderQuery).then(function (response) {
+    // axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(today)}T00:00:00.000Z&to=${formatDate(today)}T23:59:59.000Z`).then(function (response) {
+    const todayTotal = response.data
+    const todayTotalAmount = todayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
+    const todayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("reports").insertAdjacentHTML('afterend',`<hr><h1>วันนี้ Decoder</h1><br>${today.toLocaleString('th-TH', todayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${todayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${todayTotalAmount.toLocaleString()} บาท</h3>`)
+});
+
+const decoder = `https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${formatDate(yesterday2)}T17:00:00.000Z&to=${formatDate(yesterday)}T16:59:59.000Z`
+console.log(decoder);
+axios.get(decoder).then(function (response) {
     const yesterdayTotal = response.data
+    console.log(yesterdayTotal);
     const yesterdayTotalAmount = yesterdayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
     const yesterdayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById("reports2").insertAdjacentHTML('afterend',`<hr><h1>เมื่อวาน</h1><br>${yesterday.toLocaleString('th-TH', yesterdayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${yesterdayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${yesterdayTotalAmount.toLocaleString()} บาท</h3>`)
+    document.getElementById("reports2").insertAdjacentHTML('afterend',`<hr><h1>เมื่อวาน Decoder</h1><br>${yesterday.toLocaleString('th-TH', yesterdayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${yesterdayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${yesterdayTotalAmount.toLocaleString()} บาท</h3>`)
+});
+const info = `https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-info@decoder159.com&from=${formatDate(yesterday2)}T17:00:00.000Z&to=${formatDate(yesterday)}T16:59:59.000Z`
+axios.get(info).then(function (response) {
+    const yesterdayTotal = response.data
+    console.log(yesterdayTotal);
+    const yesterdayTotalAmount = yesterdayTotal.reduce( ( sum , cur ) => sum + cur.amount , 0)
+    const yesterdayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("reports2").insertAdjacentHTML('afterend',`<hr><h1>เมื่อวาน Info</h1><br>${yesterday.toLocaleString('th-TH', yesterdayOptions)}<br /><h3>จำนวนเบอร์ที่ขายได้: ${yesterdayTotal.length} เบอร์<br />เป็นเงินจำนวน: ${yesterdayTotalAmount.toLocaleString()} บาท</h3>`)
 });
 
+
+//Monthly
 const firstDayThisMonth = formatDate(new Date(today.getFullYear(), today.getMonth(), 1))
 const lastDayThisMonth = formatDate(new Date(today.getFullYear(), today.getMonth() + 1, 0))
 axios.get(`https://payment.decoder159.com/payment/transaction/list?status=pending&user_id=user-decoder@decoder159.com&from=${firstDayThisMonth}T00:00:00.000Z&to=${lastDayThisMonth}T23:59:59.000Z`).then(function (response) {
